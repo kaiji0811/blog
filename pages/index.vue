@@ -4,9 +4,14 @@
     <header class="header">
       <!-- Loading -->
       <div v-if="isWaiting" class="log_wait">
-        <p>読み込み中</p>
+        <p>Loading...</p>
       </div>
       <!-- !login -->
+      <div v-if="isLogin && !isWaiting">
+        You already logged in.<br>
+        please enter member page!<br>
+        <nuxt-link to="members/">enter</nuxt-link>
+      </div>
       <div v-else class="isLogin_wrap">
         <div v-if="!isLogin" class="btn_login">
           <button class="google_login" outlined @click="googleLogin">
@@ -26,29 +31,42 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import firebase from '@/plugins/firebase'
 export default {
   asyncData () {
     return {
-      isWaiting: true,
-      isLogin: false,
-      user: []
+      isWaiting: true
     }
+  },
+  computed: {
+    ...mapState('auth', [
+      'isLogin'
+    ])
   },
   mounted () {
     firebase.auth().onAuthStateChanged((user) => {
       this.isWaiting = false
       if (user) {
-        this.isLogin = true
-        this.user = user
-        this.$router.push('members')
+        this.saveUserInfo({
+          uid: user.uid,
+          name: user.displayName,
+          isLogin: true
+        })
+        // this.$router.push('members')
       } else {
-        this.isLogin = false
-        this.user = []
+        this.saveUserInfo({
+          uid: '',
+          name: '',
+          isLogin: false
+        })
       }
     })
   },
   methods: {
+    ...mapActions('auth', {
+      saveUserInfo: 'saveUserInfo'
+    }),
     googleLogin () {
       const provider = new firebase.auth.GoogleAuthProvider()
       firebase.auth().signInWithRedirect(provider)
