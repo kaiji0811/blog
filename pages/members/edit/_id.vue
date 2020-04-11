@@ -50,7 +50,6 @@ export default {
           content: this.content
         },
         (error) => {
-          console.log('aa')
           if (!error) {
             alert('DONE!')
           } else {

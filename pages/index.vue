@@ -10,7 +10,9 @@
       <div v-if="isLogin && !isWaiting">
         You already logged in.<br>
         please enter member page!<br>
-        <nuxt-link to="members/">enter</nuxt-link>
+        <nuxt-link to="members/">
+          enter
+        </nuxt-link>
       </div>
       <div v-else class="isLogin_wrap">
         <div v-if="!isLogin" class="btn_login">
@@ -34,17 +36,15 @@
 import { mapState, mapActions } from 'vuex'
 import firebase from '@/plugins/firebase'
 export default {
-  asyncData () {
+  asyncData() {
     return {
       isWaiting: true
     }
   },
   computed: {
-    ...mapState('auth', [
-      'isLogin'
-    ])
+    ...mapState('auth', ['isLogin'])
   },
-  mounted () {
+  mounted() {
     firebase.auth().onAuthStateChanged((user) => {
       this.isWaiting = false
       if (user) {
@@ -67,11 +67,11 @@ export default {
     ...mapActions('auth', {
       saveUserInfo: 'saveUserInfo'
     }),
-    googleLogin () {
+    googleLogin() {
       const provider = new firebase.auth.GoogleAuthProvider()
       firebase.auth().signInWithRedirect(provider)
     },
-    logOut () {
+    logOut() {
       firebase.auth().signOut()
     }
   }
@@ -89,8 +89,8 @@ export default {
 }
 
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;

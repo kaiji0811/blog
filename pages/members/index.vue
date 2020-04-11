@@ -34,18 +34,21 @@ export default {
       name: 'name'
     })
   },
-  mounted () {
-    setTimeout(() => {
-      console.log(this.name)
-    }, 0)
-  },
   methods: {
     saveToFirebase (text) {
       const newNoteKey = firebase.database().ref().child('notes').push().key
       firebase
         .database()
         .ref(`notes/${this.uid}/${newNoteKey}`)
-        .set({ content: text })
+        .set(
+          { content: text },
+          (error) => {
+            if (!error) {
+              alert('DONE!')
+            } else {
+              alert('ERROR!')
+            }
+          })
     }
   }
 }
