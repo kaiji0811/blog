@@ -23,12 +23,14 @@ export default {
   ** Global CSS
   */
   css: [
+    '~assets/sass/common'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '@/plugins/localStorage.js', ssr: false }
+    { src: '@/plugins/localStorage.js', ssr: false },
+    { src: '@/plugins/firebase.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -42,8 +44,27 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/style-resources'
   ],
+  /*
+  ** Disabling Bootstrap Compiled CSS
+  */
+  bootstrapVue: {
+  },
+
+  /*
+  ** Style resources
+  */
+  styleResources: {
+    scss: [
+      'bootstrap/scss/_functions.scss',
+      'bootstrap/scss/_variables.scss',
+      'bootstrap/scss/_mixins.scss',
+      'bootstrap-vue/src/_variables.scss'
+    ]
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

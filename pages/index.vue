@@ -1,34 +1,34 @@
 <template>
-  <div class="wrapper">
-    <!-- header -->
-    <header class="header">
-      <!-- Loading -->
-      <div v-if="isWaiting" class="log_wait">
-        <p>Loading...</p>
+  <div>
+    <div v-if="isWaiting" class="log_wait">
+      <div class="text-center">
+        <b-spinner label="Spinning" />
       </div>
-      <!-- !login -->
-      <div v-if="isLogin && !isWaiting">
-        You already logged in.<br>
-        please enter member page!<br>
-        <nuxt-link to="members/">
-          enter
-        </nuxt-link>
-      </div>
-      <div v-else class="isLogin_wrap">
-        <div v-if="!isLogin" class="btn_login">
-          <button class="google_login" outlined @click="googleLogin">
+    </div>
+    <template v-else>
+      <div v-if="!isLogin">
+        <h1>こんにちは、ゲストさん！</h1>
+        <p class="lead">
+          You have already logged in.<br>
+          please enter members page!
+        </p>
+        <div class="btn_login">
+          <b-button variant="primary" @click="googleLogin">
             Googleでログイン
-          </button>
-        </div>
-        <!-- login -->
-        <div v-else class="log_wrap">
-          <button class="google_logout" outlined @click="logOut">
-            ログアウト
-          </button>
+          </b-button>
         </div>
       </div>
-    </header>
-    <!-- body -->
+      <div v-else class="text-center">
+        <h1>Hi, {{ name }}!</h1>
+        <p class="lead">
+          サインインありがとうございます！<br>
+          Enjoy your blog life!
+        </p>
+        <b-link to="members/" router-tag="button" class="btn btn-outline-primary btn-lg">
+          Enter
+        </b-link>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -42,7 +42,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('auth', ['isLogin'])
+    ...mapState('auth', [
+      'name',
+      'isLogin'
+    ])
   },
   mounted() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -53,7 +56,6 @@ export default {
           name: user.displayName,
           isLogin: true
         })
-        // this.$router.push('members')
       } else {
         this.saveUserInfo({
           uid: '',
@@ -72,41 +74,10 @@ export default {
       firebase.auth().signInWithRedirect(provider)
     },
     logOut() {
-      firebase.auth().signOut()
+      this.$firebase.auth().signOut()
     }
   }
 }
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
+<style></style>

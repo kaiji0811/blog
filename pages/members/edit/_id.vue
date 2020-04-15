@@ -1,14 +1,22 @@
 <template>
   <div>
-    <p>
-      Title: <input v-model="title" type="text">
-    </p>
-    <p>
-      Content: <textarea v-model="content" cols="30" rows="10" />
-    </p>
-    <button @click="update">
-      Update
-    </button>
+    <div class="form-group">
+      <label for="url">URL</label>
+      <input id="url" v-model="url" type="email" class="form-control" placeholder="記事のURLを設定してください">
+    </div>
+    <div class="form-group">
+      <label for="title">タイトル</label>
+      <input id="title" v-model="title" type="text" class="form-control" placeholder="記事のタイトルを入力してください">
+    </div>
+    <div class="form-group">
+      <label for="content">本文</label>
+      <textarea id="content" v-model="content" class="form-control" cols="30" rows="10" placeholder="本文を入力してください" />
+    </div>
+    <div class="form-group">
+      <b-button variant="primary" @click="update">
+        上書きする
+      </b-button>
+    </div>
   </div>
 </template>
 
@@ -16,9 +24,10 @@
 import { mapState } from 'vuex'
 import firebase from '@/plugins/firebase'
 export default {
+  middleware: 'authentication',
   data () {
     return {
-      id: this.$route.query.hash,
+      url: this.$route.query.url,
       title: '',
       content: ''
     }
@@ -32,9 +41,10 @@ export default {
     setTimeout(() => {
       firebase
         .database()
-        .ref(`notes/${this.uid}/${this.id}`)
+        .ref(`articles/${this.uid}/${this.url}`)
         .once('value')
         .then((snapshot) => {
+          this.url = snapshot.val().url
           this.title = snapshot.val().title
           this.content = snapshot.val().content
         })
@@ -44,8 +54,9 @@ export default {
     update () {
       firebase
         .database()
-        .ref(`notes/${this.uid}/${this.id}`)
+        .ref(`articles/${this.uid}/${this.url}`)
         .update({
+          url: this.url,
           title: this.title,
           content: this.content
         },

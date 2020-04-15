@@ -13,6 +13,9 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
-    'space-before-function-paren': 0
+    'arrow-parens': 0,
+    'space-before-function-paren': 0,
+    'vue/max-attributes-per-line': 0,
+    ' vue/singleline-html-element-content-newline': 0
   }
 }

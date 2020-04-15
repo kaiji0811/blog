@@ -1,59 +1,48 @@
 <template>
   <div>
-    Hello, {{ name }}!
-    <div>
-      <ul>
-        <li>
-          <nuxt-link to="/members/create">
-            記事の新規作成
-          </nuxt-link>
-        </li>
-        <li>
-          <nuxt-link to="/members/edit">
-            記事の修正
-          </nuxt-link>
-        </li>
-      </ul>
+    <h1>ダッシュボード</h1>
+    <div class="my-4 d-flex flex-row">
+      <b-card
+        title="記事を作成する"
+        img-src="https://picsum.photos/600/300/?image=25"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="mb-2"
+      >
+        <b-card-text>
+          新しい記事を作成することが出来ます。
+        </b-card-text>
+        <b-button to="/members/create" variant="primary">
+          記事を作成する
+        </b-button>
+      </b-card>
+      <b-card
+        title="記事を編集する"
+        img-src="https://picsum.photos/600/300/?image=25"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="ml-4 mb-2"
+      >
+        <b-card-text>
+          既にある記事を編集することが出来ます。
+        </b-card-text>
+        <b-button to="/members/edit" variant="primary">
+          記事を編集する
+        </b-button>
+      </b-card>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import firebase from '@/plugins/firebase'
-
 export default {
-  data () {
-    return {
-      text: ''
-    }
-  },
-  computed: {
-    ...mapState('auth', {
-      uid: 'uid',
-      name: 'name'
-    })
-  },
-  methods: {
-    saveToFirebase (text) {
-      const newNoteKey = firebase.database().ref().child('notes').push().key
-      firebase
-        .database()
-        .ref(`notes/${this.uid}/${newNoteKey}`)
-        .set(
-          { content: text },
-          (error) => {
-            if (!error) {
-              alert('DONE!')
-            } else {
-              alert('ERROR!')
-            }
-          })
-    }
-  }
+  middleware: 'authentication'
 }
 </script>
 
 <style>
-
 </style>
