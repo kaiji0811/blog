@@ -3,7 +3,6 @@
     <h1>ダッシュボード</h1>
     <div class="my-4 d-flex flex-row">
       <b-card
-        title="記事を作成する"
         img-src="https://picsum.photos/600/300/?image=25"
         img-alt="Image"
         img-top
@@ -11,6 +10,9 @@
         style="max-width: 20rem;"
         class="mb-2"
       >
+        <b-card-title>
+          記事を<br class="d-block d-sm-none">作成する
+        </b-card-title>
         <b-card-text>
           新しい記事を作成することが出来ます。
         </b-card-text>
@@ -19,7 +21,6 @@
         </b-button>
       </b-card>
       <b-card
-        title="記事を編集する"
         img-src="https://picsum.photos/600/300/?image=25"
         img-alt="Image"
         img-top
@@ -27,6 +28,9 @@
         style="max-width: 20rem;"
         class="ml-4 mb-2"
       >
+        <b-card-title>
+          記事を<br class="d-block d-sm-none">編集する
+        </b-card-title>
         <b-card-text>
           既にある記事を編集することが出来ます。
         </b-card-text>

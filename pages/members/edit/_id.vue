@@ -22,7 +22,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import firebase from '@/plugins/firebase'
+import { DB } from '@/plugins/firebase'
 export default {
   middleware: 'authentication',
   data () {
@@ -39,8 +39,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      firebase
-        .database()
+      DB
         .ref(`articles/${this.uid}/${this.url}`)
         .once('value')
         .then((snapshot) => {
@@ -52,8 +51,7 @@ export default {
   },
   methods: {
     update () {
-      firebase
-        .database()
+      DB
         .ref(`articles/${this.uid}/${this.url}`)
         .update({
           url: this.url,

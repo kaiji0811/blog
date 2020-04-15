@@ -15,10 +15,4 @@ export default {
 }
 </script>
 <style lang="scss">
-.container {
-  @include media-breakpoint-up(lg) {
-    max-width: 660px;
-    margin-left: 320px;
-  }
-}
 </style>

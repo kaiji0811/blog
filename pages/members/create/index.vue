@@ -25,7 +25,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import firebase from '@/plugins/firebase'
+import { DB } from '@/plugins/firebase'
 
 export default {
   middleware: 'authentication',
@@ -41,14 +41,12 @@ export default {
       uid: 'uid'
     })
   },
-  created () {
-  },
+  created () {},
   methods: {
     saveNewArticle () {
-      const newNoteKey = firebase.database().ref().child('articles').push().key
+      const newNoteKey = DB.ref().child('articles').push().key
       const today = new Date()
-      firebase
-        .database()
+      DB
         .ref(`articles/${this.uid}/${this.url}`)
         .set({
           id: newNoteKey,
@@ -59,9 +57,9 @@ export default {
         },
         (error) => {
           if (!error) {
-            alert('DONE!')
+            console.log('OK')
           } else {
-            alert('ERROR!')
+            console.log(error)
           }
         })
     }

@@ -1,17 +1,20 @@
 <template>
   <div>
-    <div v-if="isWaiting" class="log_wait">
-      <div class="text-center">
-        <b-spinner label="Spinning" />
-      </div>
-    </div>
-    <template v-else>
+    <b-card v-for="article in articles" :key="article.id"
+      tag="article"
+      style="max-width: 20rem;"
+      class="mb-2"
+    >
+      <b-card-title>
+        <nuxt-link :to="{name: 'articles-id', params: { id: article.title }}">
+          {{ article.title }}
+        </nuxt-link>
+      </b-card-title>
+    </b-card>
+    <!-- <template v-else>
       <div v-if="!isLogin">
         <h1>こんにちは、ゲストさん！</h1>
-        <p class="lead">
-          You have already logged in.<br>
-          please enter members page!
-        </p>
+        <p class="lead" />
         <div class="btn_login">
           <b-button variant="primary" @click="googleLogin">
             Googleでログイン
@@ -28,53 +31,46 @@
           Enter
         </b-link>
       </div>
-    </template>
+    </template> -->
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import firebase from '@/plugins/firebase'
+import { Auth, Provider, DB } from '@/plugins/firebase'
 export default {
   asyncData() {
     return {
-      isWaiting: true
     }
   },
   computed: {
     ...mapState('auth', [
       'name',
       'isLogin'
+    ]),
+    ...mapState('articles', [
+      'articles'
     ])
   },
   mounted() {
-    firebase.auth().onAuthStateChanged((user) => {
-      this.isWaiting = false
-      if (user) {
-        this.saveUserInfo({
-          uid: user.uid,
-          name: user.displayName,
-          isLogin: true
-        })
-      } else {
-        this.saveUserInfo({
-          uid: '',
-          name: '',
-          isLogin: false
-        })
-      }
-    })
+    DB
+      .ref('articles/')
+      .on('child_added', (snapshot) => {
+        this.saveArticles(snapshot.val())
+      })
   },
   methods: {
     ...mapActions('auth', {
       saveUserInfo: 'saveUserInfo'
     }),
+    ...mapActions('articles', {
+      saveArticles: 'saveArticles'
+    }),
     googleLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithRedirect(provider)
+      Auth.signInWithRedirect(Provider.google())
     },
     logOut() {
-      this.$firebase.auth().signOut()
+      Auth.signOut()
     }
   }
 }

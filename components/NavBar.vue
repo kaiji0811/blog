@@ -1,25 +1,14 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" class="d-block d-lg-none flex-column" type="dark" variant="dark">
+    <b-navbar type="dark" variant="dark" class="d-flex justify-content-between">
       <b-navbar-brand to="/">
-        Blog Manager
+        ブロググ！
       </b-navbar-brand>
-
-      <b-navbar-toggle target="nav-collapse" />
-
-      <b-collapse id="nav-collapse" is-nav>
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item v-if="!isLogin" href="#">
-            Login
-          </b-nav-item>
-          <b-nav-item v-else href="#" @click="logOut()">
-            Logout
-          </b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
+      <b-button v-b-toggle.sidemenu variant="light">
+        Menu
+      </b-button>
     </b-navbar>
-    <b-sidebar id="sidebar-1" no-header-close class="d-none d-lg-block" title="Blog Manager" bg-variant="dark" text-variant="light">
+    <b-sidebar id="sidemenu" title="Blog Manager" bg-variant="dark" text-variant="light">
       <div class="px-3 py-2">
         <b-nav vertical>
           <template v-if="isLogin">
@@ -49,7 +38,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import firebase from '@/plugins/firebase'
+import { Auth, Provider } from '@/plugins/firebase'
 
 export default {
   computed: {
@@ -58,7 +47,7 @@ export default {
     ])
   },
   mounted () {
-    firebase.auth().onAuthStateChanged((user) => {
+    Auth.onAuthStateChanged((user) => {
       if (user) {
         this.saveUserInfo({
           uid: user.uid,
@@ -79,13 +68,12 @@ export default {
       saveUserInfo: 'saveUserInfo'
     }),
     googleLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithRedirect(provider).then((result) => {
+      Auth.signInWithRedirect(Provider).then((result) => {
         this.$router.push('/members')
       })
     },
     logOut() {
-      firebase.auth().signOut()
+      Auth.signOut()
       this.$router.push('/')
     }
   }
