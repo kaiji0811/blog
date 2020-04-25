@@ -1,27 +1,36 @@
 <template>
-  <div>
+  <div class="d-flex flex-nowrap flex-column flex-sm-row justify-content-between justify-content-lg-start align-items-center">
     <b-link
-      v-for="item in sortedItemsByCreated"
+      router-tag="div"
+      v-for="item in itemsOrderByCreated"
       :key="item.id"
       :to="{name: 'articles-id', params: { id: item.title }}"
-      router-tag="div"
     >
-      <b-card tag="article" :img-src="item.thumb" style="max-width: 20rem;" class="mb-2">
-        <b-card-title>{{ item.title }}</b-card-title>
+      <b-card tag="article" :img-src="item.thumb" style="max-width: 20rem;" class="mb-2 mx-2">
+        <b-card-title>
+          {{ item.title }}
+        </b-card-title>
+        <b-card-text class="text-right">
+          <small class="d-block text-muted">
+            {{ item.name }}
+          </small>
+          <small class="d-block text-muted">
+            {{ item.created }}
+          </small>
+        </b-card-text>
       </b-card>
     </b-link>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import { Auth, Provider, DB } from '@/plugins/firebase'
+import { mapState } from 'vuex'
+import { Auth, Provider } from '@/plugins/firebase'
 export default {
   middleware: 'getArticles',
   computed: {
-    ...mapState('auth', ['name', 'isLogin']),
     ...mapState('articles', ['items']),
-    sortedItemsByCreated() {
+    itemsOrderByCreated() {
       return Object.entries(this.items)
         .map(([key, value]) => ({
           ...value
@@ -32,17 +41,8 @@ export default {
     }
   },
   mounted() {
-    DB.ref('articles/').on('child_added', snapshot => {
-      this.saveArticles(snapshot.val())
-    })
   },
   methods: {
-    ...mapActions('auth', {
-      saveUserInfo: 'saveUserInfo'
-    }),
-    ...mapActions('articles', {
-      saveArticles: 'saveArticles'
-    }),
     googleLogin() {
       Auth.signInWithRedirect(Provider.google())
     },

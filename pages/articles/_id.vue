@@ -1,17 +1,20 @@
 <template>
   <div>
-    <div class="d-flex justify-content-between align-items-center">
+    <div>
       <h1>
-        {{ title }}
+        {{ article.title }}
       </h1>
       <p class="lead">
         <small>
-          {{ created }}
+          {{ article.created }} Written by {{ article.name }}
         </small>
       </p>
     </div>
-    <div class="mt-5">
-      <div v-html="$md.render(content)" />
+    <div>
+      <div class="jumbotron my-5 text-center">
+        <b-img :src="article.thumb" fluid />
+      </div>
+      <div v-html="$md.render(article.content)" />
     </div>
   </div>
 </template>
@@ -28,15 +31,6 @@ export default {
   computed: {
     article () {
       return this.$store.getters['articles/getArticle'](this.$route.params.id)
-    },
-    title () {
-      return this.article.title
-    },
-    created () {
-      return this.article.created
-    },
-    content () {
-      return this.article.content
     }
   }
 }

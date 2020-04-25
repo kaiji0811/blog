@@ -45,7 +45,8 @@ export default {
   },
   computed: {
     ...mapState('auth', {
-      uid: 'uid'
+      uid: 'uid',
+      name: 'name'
     })
   },
   methods: {
@@ -60,6 +61,7 @@ export default {
           id: newNoteKey,
           title: this.title,
           thumb: this.thumb,
+          name: this.name,
           content: this.content,
           created: `${today.getFullYear()}/${today.getMonth()}/${today.getDay()} ${today.getHours()}:${today.getMinutes()}`
         },

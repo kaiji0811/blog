@@ -2,13 +2,13 @@
   <div>
     <b-navbar type="dark" variant="dark" class="d-flex justify-content-between">
       <b-navbar-brand to="/">
-        GOMALOG
+        Mustle Angular's Blog
       </b-navbar-brand>
       <b-button v-b-toggle.sidemenu variant="light">
         Menu
       </b-button>
     </b-navbar>
-    <b-sidebar id="sidemenu" title="GOMALOG" bg-variant="dark" text-variant="light">
+    <b-sidebar id="sidemenu" title="Mustle Angular's Blog" bg-variant="dark" text-variant="light">
       <div class="px-3 py-2">
         <b-nav vertical>
           <template v-if="isLogin">
@@ -52,13 +52,10 @@ export default {
         this.saveUserInfo({
           uid: user.uid,
           name: user.displayName,
+          email: user.email,
+          phoneNumber: user.phoneNumber ? user.phoneNumber : '',
+          photoURL: user.photoURL,
           isLogin: true
-        })
-      } else {
-        this.saveUserInfo({
-          uid: '',
-          name: '',
-          isLogin: false
         })
       }
     })
