@@ -1,17 +1,28 @@
+import { DB } from '@/plugins/firebase'
+
+const initialState = {
+  title: '',
+  created: '',
+  content: ''
+}
 export const state = () => ({
-  articles: {}
+  items: {}
 })
 
 export const actions = {
   saveArticles ({ commit }, payload) {
-    commit('SAVE_ARTICLES', payload)
+    DB
+      .ref('articles/')
+      .on('child_added', (snapshot) => {
+        commit('SAVE_ARTICLES', snapshot.val())
+      })
   }
 }
 
 export const mutations = {
   SAVE_ARTICLES (state, payload) {
-    state.articles = {
-      ...state.articles,
+    state.items = {
+      ...state.items,
       ...payload
     }
   }
@@ -19,6 +30,7 @@ export const mutations = {
 
 export const getters = {
   getArticle: (state) => (id) => {
-    return state.articles[id]
+    return !state.items[id]
+      ? initialState : state.items[id]
   }
 }

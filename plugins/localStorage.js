@@ -1,9 +1,8 @@
-import createPersistedState from 'vuex-persistedstate'
-
+// import createPersistedState from 'vuex-persistedstate'
 export default ({ store }) => {
-  window.onNuxtReady(() => {
-    createPersistedState({
-      storage: window.sessionStorage
-    })(store)
-  })
+  // window.onNuxtReady(() => {
+  //   createPersistedState({
+  //     storage: window.sessionStorage
+  //   })(store)
+  // })
 }

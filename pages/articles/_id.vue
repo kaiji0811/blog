@@ -1,34 +1,43 @@
 <template>
   <div>
-    {{ title }}<br>
-    {{ content }}<br>
-    {{ created }}<br>
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>
+        {{ title }}
+      </h1>
+      <p class="lead">
+        <small>
+          {{ created }}
+        </small>
+      </p>
+    </div>
+    <div class="mt-5">
+      <div v-html="$md.render(content)" />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { DB } from '../../plugins/firebase'
-// import { DB } from '@/plugins/firebase'
 export default {
+  middleware: [
+    'getArticles'
+  ],
   data () {
     return {
-      title: '',
-      content: '',
-      created: ''
     }
   },
-  created () {
-    DB
-      .ref('articles/')
-      .on('child_added', (snapshot) => {
-        console.log(snapshot.val())
-      })
-  },
   computed: {
-    ...mapGetters('articles', [
-      'getArticle'
-    ])
+    article () {
+      return this.$store.getters['articles/getArticle'](this.$route.params.id)
+    },
+    title () {
+      return this.article.title
+    },
+    created () {
+      return this.article.created
+    },
+    content () {
+      return this.article.content
+    }
   }
 }
 </script>

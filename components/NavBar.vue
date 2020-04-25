@@ -2,13 +2,13 @@
   <div>
     <b-navbar type="dark" variant="dark" class="d-flex justify-content-between">
       <b-navbar-brand to="/">
-        ブロググ！
+        GOMALOG
       </b-navbar-brand>
       <b-button v-b-toggle.sidemenu variant="light">
         Menu
       </b-button>
     </b-navbar>
-    <b-sidebar id="sidemenu" title="Blog Manager" bg-variant="dark" text-variant="light">
+    <b-sidebar id="sidemenu" title="GOMALOG" bg-variant="dark" text-variant="light">
       <div class="px-3 py-2">
         <b-nav vertical>
           <template v-if="isLogin">
@@ -68,7 +68,7 @@ export default {
       saveUserInfo: 'saveUserInfo'
     }),
     googleLogin() {
-      Auth.signInWithRedirect(Provider).then((result) => {
+      Auth.signInWithRedirect(Provider.google()).then((result) => {
         this.$router.push('/members')
       })
     },

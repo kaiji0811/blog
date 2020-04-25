@@ -2,8 +2,8 @@
   <div>
     <form>
       <div class="form-group">
-        <label for="url">URL</label>
-        <input id="url" v-model="url" type="email" class="form-control" placeholder="記事のURLを設定してください">
+        <label for="thumb">画像</label>
+        <input id="thumb" v-model="thumb" type="text" class="form-control" placeholder="記事のタイトルを入力してください">
       </div>
       <div class="form-group">
         <label for="title">タイトル</label>
@@ -14,6 +14,12 @@
         <textarea id="content" v-model="content" class="form-control" cols="30" rows="10" placeholder="本文を入力してください" />
       </div>
       <div class="form-group">
+        <b-button variant="primary" v-b-modal.modal-preview>
+          プレビュー
+        </b-button>
+        <b-modal id="modal-preview" title="プレビュー" okTitle="投稿する" cancelTitle="キャンセル" size="lg" @ok="saveNewArticle">
+          <div v-html="$md.render(content)" />
+        </b-modal>
         <b-button variant="primary" @click="saveNewArticle">
           投稿する
         </b-button>
@@ -33,6 +39,7 @@ export default {
     return {
       url: '',
       title: '',
+      thumb: 'https://picsum.photos/600/300?grayscale',
       content: ''
     }
   },
@@ -41,25 +48,26 @@ export default {
       uid: 'uid'
     })
   },
-  created () {},
   methods: {
+    preview () {
+    },
     saveNewArticle () {
       const newNoteKey = DB.ref().child('articles').push().key
       const today = new Date()
       DB
-        .ref(`articles/${this.uid}/${this.url}`)
+        .ref(`articles/${this.uid}/${this.title}`)
         .set({
           id: newNoteKey,
-          url: this.url,
           title: this.title,
+          thumb: this.thumb,
           content: this.content,
           created: `${today.getFullYear()}/${today.getMonth()}/${today.getDay()} ${today.getHours()}:${today.getMinutes()}`
         },
         (error) => {
           if (!error) {
-            console.log('OK')
+            this.$route.push('/members')
           } else {
-            console.log(error)
+            alert(error)
           }
         })
     }

@@ -1,37 +1,15 @@
 <template>
   <div>
-    <b-card v-for="article in articles" :key="article.id"
-      tag="article"
-      style="max-width: 20rem;"
-      class="mb-2"
+    <b-link
+      v-for="item in sortedItemsByCreated"
+      :key="item.id"
+      :to="{name: 'articles-id', params: { id: item.title }}"
+      router-tag="div"
     >
-      <b-card-title>
-        <nuxt-link :to="{name: 'articles-id', params: { id: article.title }}">
-          {{ article.title }}
-        </nuxt-link>
-      </b-card-title>
-    </b-card>
-    <!-- <template v-else>
-      <div v-if="!isLogin">
-        <h1>こんにちは、ゲストさん！</h1>
-        <p class="lead" />
-        <div class="btn_login">
-          <b-button variant="primary" @click="googleLogin">
-            Googleでログイン
-          </b-button>
-        </div>
-      </div>
-      <div v-else class="text-center">
-        <h1>Hi, {{ name }}!</h1>
-        <p class="lead">
-          サインインありがとうございます！<br>
-          Enjoy your blog life!
-        </p>
-        <b-link to="members/" router-tag="button" class="btn btn-outline-primary btn-lg">
-          Enter
-        </b-link>
-      </div>
-    </template> -->
+      <b-card tag="article" :img-src="item.thumb" style="max-width: 20rem;" class="mb-2">
+        <b-card-title>{{ item.title }}</b-card-title>
+      </b-card>
+    </b-link>
   </div>
 </template>
 
@@ -39,25 +17,24 @@
 import { mapState, mapActions } from 'vuex'
 import { Auth, Provider, DB } from '@/plugins/firebase'
 export default {
-  asyncData() {
-    return {
+  middleware: 'getArticles',
+  computed: {
+    ...mapState('auth', ['name', 'isLogin']),
+    ...mapState('articles', ['items']),
+    sortedItemsByCreated() {
+      return Object.entries(this.items)
+        .map(([key, value]) => ({
+          ...value
+        }))
+        .sort((a, b) => {
+          return a.created > b.created ? -1 : a.created < b.created ? 1 : 0
+        })
     }
   },
-  computed: {
-    ...mapState('auth', [
-      'name',
-      'isLogin'
-    ]),
-    ...mapState('articles', [
-      'articles'
-    ])
-  },
   mounted() {
-    DB
-      .ref('articles/')
-      .on('child_added', (snapshot) => {
-        this.saveArticles(snapshot.val())
-      })
+    DB.ref('articles/').on('child_added', snapshot => {
+      this.saveArticles(snapshot.val())
+    })
   },
   methods: {
     ...mapActions('auth', {
