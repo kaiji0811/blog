@@ -4,6 +4,9 @@ export default {
   /*
   ** Headers of the page
   */
+  router: {
+    middleware: 'authentication'
+  },
   head: {
     title: process.env.npm_package_name || '',
     meta: [

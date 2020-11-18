@@ -21,6 +21,9 @@
             <b-nav-item link-classes="text-light" to="/members/edit">
               記事を編集する
             </b-nav-item>
+            <b-nav-item link-classes="text-light" to="/members/profile">
+              プロフィール
+            </b-nav-item>
             <b-nav-item link-classes="text-light" @click="logOut">
               サインアウト
             </b-nav-item>
@@ -37,7 +40,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import { Auth, Provider } from '@/plugins/firebase'
 
 export default {
@@ -46,24 +49,7 @@ export default {
       'isLogin'
     ])
   },
-  mounted () {
-    Auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.saveUserInfo({
-          uid: user.uid,
-          name: user.displayName,
-          email: user.email,
-          phoneNumber: user.phoneNumber ? user.phoneNumber : '',
-          photoURL: user.photoURL,
-          isLogin: true
-        })
-      }
-    })
-  },
   methods: {
-    ...mapActions('auth', {
-      saveUserInfo: 'saveUserInfo'
-    }),
     googleLogin() {
       Auth.signInWithRedirect(Provider.google()).then((result) => {
         this.$router.push('/members')

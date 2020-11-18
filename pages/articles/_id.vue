@@ -14,7 +14,7 @@
       <div class="jumbotron my-5 text-center">
         <b-img :src="article.thumb" fluid />
       </div>
-      <div v-html="$md.render(article.content)" />
+      <div class="article" v-html="$md.render(`${article.content}`)" />
     </div>
   </div>
 </template>
@@ -36,4 +36,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss">
+.article {
+  p {
+    font-size: 20px;
+  }
+}
+</style>

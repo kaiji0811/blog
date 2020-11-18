@@ -42,11 +42,5 @@
   </div>
 </template>
 
-<script>
-export default {
-  middleware: 'authentication'
-}
-</script>
-
 <style>
 </style>

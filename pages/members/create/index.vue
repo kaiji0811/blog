@@ -34,7 +34,6 @@ import { mapState } from 'vuex'
 import { DB } from '@/plugins/firebase'
 
 export default {
-  middleware: 'authentication',
   data () {
     return {
       url: '',
@@ -46,7 +45,7 @@ export default {
   computed: {
     ...mapState('auth', {
       uid: 'uid',
-      name: 'name'
+      nickName: 'nickName'
     })
   },
   methods: {
@@ -61,13 +60,13 @@ export default {
           id: newNoteKey,
           title: this.title,
           thumb: this.thumb,
-          name: this.name,
+          name: this.nickName,
           content: this.content,
           created: `${today.getFullYear()}/${today.getMonth()}/${today.getDay()} ${today.getHours()}:${today.getMinutes()}`
         },
         (error) => {
           if (!error) {
-            this.$route.push('/members')
+            this.$router.push('/members')
           } else {
             alert(error)
           }

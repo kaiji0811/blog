@@ -1,40 +1,49 @@
 import { DB } from '@/plugins/firebase'
 export const state = () => ({
-  uid: '',
-  name: '',
-  email: '',
-  phoneNumber: '',
-  photoURL: '',
+  uid: null,
+  name: null,
+  nickName: null,
+  email: null,
+  phoneNumber: null,
+  photoURL: null,
   isLogin: false
 })
 
 export const actions = {
-  saveUserInfo ({ commit }, payload) {
-    commit('SAVE_USER_INFO', payload)
+  async saveUserInfo ({ commit }, user) {
+    const db = await DB.ref(`users/${user.uid}`)
+    const fetch = await db.once('value')
+    const data = {
+      uid: user.uid,
+      name: user.displayName,
+      nickName: fetch.val().nickName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      photoURL: user.photoURL,
+      isLogin: true
+    }
+    db
+      .set(
+        { ...data },
+        (error) => {
+          if (!error) {
+          }
+        })
+    commit('SAVE_USER_INFO', data)
+  },
+  updateUserNickname ({ commit }, nickName) {
+    commit('UPDATE_USER_NICKNAME', nickName)
   }
 }
 
 export const mutations = {
   SAVE_USER_INFO (state, payload) {
-    DB
-      .ref(`users/${payload.uid}`)
-      .set({
-        uid: payload.uid,
-        name: payload.name,
-        email: payload.email,
-        phoneNumber: payload.phoneNumber,
-        photoURL: payload.photoURL
-      },
-      (error) => {
-        if (!error) {
-        }
-      })
-    state.uid = payload.uid
-    state.name = payload.name
-    state.email = payload.email
-    state.phoneNumber = payload.phoneNumber
-    state.photoURL = payload.photoURL
-    state.isLogin = payload.isLogin
+    for (const key in payload) {
+      state[key] = payload[key]
+    }
+  },
+  UPDATE_USER_NICKNAME (state, payload) {
+    state.nickName = payload
   }
 }
 

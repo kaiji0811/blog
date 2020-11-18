@@ -24,7 +24,6 @@
 import { mapState } from 'vuex'
 import { DB } from '@/plugins/firebase'
 export default {
-  middleware: 'authentication',
   data () {
     return {
       url: this.$route.query.url,
