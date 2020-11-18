@@ -1,10 +1,6 @@
 <template>
   <div>
     <div class="form-group">
-      <label for="url">URL</label>
-      <input id="url" v-model="url" type="email" class="form-control" placeholder="記事のURLを設定してください">
-    </div>
-    <div class="form-group">
       <label for="title">タイトル</label>
       <input id="title" v-model="title" type="text" class="form-control" placeholder="記事のタイトルを入力してください">
     </div>
@@ -26,7 +22,7 @@ import { DB } from '@/plugins/firebase'
 export default {
   data () {
     return {
-      url: this.$route.query.url,
+      url: this.$route.params.id,
       title: '',
       content: ''
     }
@@ -36,24 +32,20 @@ export default {
       uid: 'uid'
     })
   },
-  mounted () {
-    setTimeout(() => {
-      DB
-        .ref(`articles/${this.uid}/${this.url}`)
-        .once('value')
-        .then((snapshot) => {
-          this.url = snapshot.val().url
-          this.title = snapshot.val().title
-          this.content = snapshot.val().content
-        })
-    }, 0)
+  created () {
+    DB
+      .ref(`articles/${this.uid}/${this.url}`)
+      .once('value')
+      .then((snapshot) => {
+        this.title = snapshot.val().title
+        this.content = snapshot.val().content
+      })
   },
   methods: {
     update () {
       DB
         .ref(`articles/${this.uid}/${this.url}`)
         .update({
-          url: this.url,
           title: this.title,
           content: this.content
         },

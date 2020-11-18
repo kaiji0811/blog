@@ -2,7 +2,7 @@
   <div>
     <ul v-if="articles">
       <li v-for="article in articles" :key="article.created">
-        <nuxt-link :to="{name: 'members-edit-id', params: { id: article.title }, query: { url: article.url }}">
+        <nuxt-link :to="{name: 'members-edit-id', params: { id: article.title }}">
           <p>{{ article.title }}</p>
           <p>{{ article.content }}</p>
           <p>{{ article.created }}</p>
@@ -38,15 +38,13 @@ export default {
       uid: 'uid'
     })
   },
-  mounted () {
-    setTimeout(() => {
-      DB
-        .ref(`articles/${this.uid}/`)
-        .once('value')
-        .then((snapshot) => {
-          this.articles = snapshot.val()
-        })
-    }, 0)
+  created () {
+    DB
+      .ref(`articles/${this.uid}/`)
+      .once('value')
+      .then((snapshot) => {
+        this.articles = snapshot.val()
+      })
   }
 }
 </script>

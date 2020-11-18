@@ -38,7 +38,7 @@ export default {
     return {
       url: '',
       title: '',
-      thumb: 'https://picsum.photos/600/300?grayscale',
+      thumb: `https://picsum.photos/1180/300?image=${Math.floor(Math.random() * 1000)}`,
       content: ''
     }
   },
@@ -49,8 +49,6 @@ export default {
     })
   },
   methods: {
-    preview () {
-    },
     saveNewArticle () {
       const newNoteKey = DB.ref().child('articles').push().key
       const today = new Date()

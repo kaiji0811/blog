@@ -1,12 +1,17 @@
 import { DB } from '@/plugins/firebase'
-export const state = () => ({
+
+const initialState = {
   uid: null,
   name: null,
-  nickName: null,
+  nickName: '',
   email: null,
   phoneNumber: null,
   photoURL: null,
   isLogin: false
+}
+
+export const state = () => ({
+  ...initialState
 })
 
 export const actions = {
@@ -31,6 +36,9 @@ export const actions = {
         })
     commit('SAVE_USER_INFO', data)
   },
+  deleteUserInfo ({ commit }) {
+    commit('DELETE_USER_INFO')
+  },
   updateUserNickname ({ commit }, nickName) {
     commit('UPDATE_USER_NICKNAME', nickName)
   }
@@ -42,10 +50,16 @@ export const mutations = {
       state[key] = payload[key]
     }
   },
+  DELETE_USER_INFO (state) {
+    Object.assign(state, initialState)
+  },
   UPDATE_USER_NICKNAME (state, payload) {
     state.nickName = payload
   }
 }
 
-// export const getters = () => ({
-// })
+export const getters = {
+  isLogin: state => {
+    return state.isLogin
+  }
+}

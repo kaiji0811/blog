@@ -11,7 +11,7 @@
       </p>
     </div>
     <div>
-      <div class="jumbotron my-5 text-center">
+      <div class="my-5 text-center">
         <b-img :src="article.thumb" fluid />
       </div>
       <div class="article" v-html="$md.render(`${article.content}`)" />
