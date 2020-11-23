@@ -33,7 +33,8 @@ export default {
   */
   plugins: [
     { src: '@/plugins/localStorage.js', ssr: false },
-    { src: '@/plugins/firebase.js', ssr: false }
+    { src: '@/plugins/firebase.js', ssr: false },
+    { src: '@/plugins/prism.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -50,7 +51,7 @@ export default {
     '@nuxtjs/axios',
     'bootstrap-vue/nuxt',
     '@nuxtjs/style-resources',
-    '@nuxtjs/markdownit'
+    '@nuxtjs/markdownit',
   ],
   markdownit: {
     injected: true

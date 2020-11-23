@@ -32,15 +32,19 @@
 <script>
 import { mapState } from 'vuex'
 import { DB } from '@/plugins/firebase'
+import Prism from '@/plugins/prism'
 
 export default {
   data () {
     return {
       url: '',
       title: '',
-      thumb: `https://picsum.photos/1180/300?image=${Math.floor(Math.random() * 1000)}`,
+      thumb: `https://picsum.photos/1180/590?image=${Math.floor(Math.random() * 100)}`,
       content: ''
     }
+  },
+  created() {
+    Prism.highlightAll()
   },
   computed: {
     ...mapState('auth', {
@@ -60,7 +64,7 @@ export default {
           thumb: this.thumb,
           name: this.nickName,
           content: this.content,
-          created: `${today.getFullYear()}/${today.getMonth()}/${today.getDay()} ${today.getHours()}:${today.getMinutes()}`
+          created: `${today.getFullYear()}/${today.getMonth() + 1 === 13 ? 1 : today.getMonth() + 1}/${today.getDate()} ${('0' + today.getHours()).slice(-2)}:${('0' + today.getMinutes()).slice(-2)}`
         },
         (error) => {
           if (!error) {

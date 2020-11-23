@@ -14,12 +14,13 @@
       <div class="my-5 text-center">
         <b-img :src="article.thumb" fluid />
       </div>
-      <div class="article" v-html="$md.render(`${article.content}`)" />
+      <div class="article line-numbers" v-html="$md.render(`${article.content}`)" />
     </div>
   </div>
 </template>
 
 <script>
+import Prism from '@/plugins/prism'
 export default {
   middleware: [
     'getArticles'
@@ -27,6 +28,9 @@ export default {
   data () {
     return {
     }
+  },
+  mounted() {
+    Prism.highlightAll()
   },
   computed: {
     article () {
