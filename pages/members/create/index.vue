@@ -39,11 +39,11 @@ export default {
     return {
       url: '',
       title: '',
-      thumb: `https://picsum.photos/1180/590?image=${Math.floor(Math.random() * 100)}`,
+      thumb: `https://picsum.photos/1180/590?image=${Math.floor(Math.random() * 1000)}`,
       content: ''
     }
   },
-  created() {
+  mounted () {
     Prism.highlightAll()
   },
   computed: {
