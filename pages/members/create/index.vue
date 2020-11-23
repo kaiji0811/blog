@@ -14,10 +14,10 @@
         <textarea id="content" v-model="content" class="form-control" cols="30" rows="10" placeholder="本文を入力してください" />
       </div>
       <div class="form-group">
-        <b-button variant="primary" v-b-modal.modal-preview>
+        <b-button v-b-modal.modal-preview variant="primary">
           プレビュー
         </b-button>
-        <b-modal id="modal-preview" title="プレビュー" okTitle="投稿する" cancelTitle="キャンセル" size="lg" @ok="saveNewArticle">
+        <b-modal id="modal-preview" title="プレビュー" ok-title="投稿する" cancel-title="キャンセル" size="lg" @ok="saveNewArticle">
           <div v-html="$md.render(content)" />
         </b-modal>
         <b-button variant="primary" @click="saveNewArticle">

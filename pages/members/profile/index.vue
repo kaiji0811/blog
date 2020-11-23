@@ -6,7 +6,9 @@
       <input id="nickName" v-model.lazy="nickName" type="text" class="form-control" placeholder="ニックネームを設定してください">
     </div>
     <div class="form-group">
-      <b-button variant="primary" @click="update"> 上書きする </b-button>
+      <b-button variant="primary" @click="update">
+        上書きする
+      </b-button>
     </div>
   </div>
 </template>

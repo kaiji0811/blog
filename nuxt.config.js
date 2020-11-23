@@ -8,7 +8,7 @@ export default {
     middleware: 'authentication'
   },
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'くろねこてっく',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

@@ -4,11 +4,11 @@
   >
     <b-row align-v="stretch">
       <b-col
+        v-for="item in itemsOrderByCreated"
+        :key="item.id"
         cols="12"
         md="6"
         lg="4"
-        v-for="item in itemsOrderByCreated"
-        :key="item.id"
       >
         <b-link
           router-tag="div"
@@ -44,12 +44,13 @@ export default {
   computed: {
     ...mapState('articles', ['items']),
     itemsOrderByCreated() {
+      console.log(this.items)
       return Object.entries(this.items)
         .map(([key, value]) => ({
           ...value
         }))
         .sort((a, b) => {
-          return a.created > b.created ? -1 : a.created < b.created ? 1 : 0
+          return new Date(a.created) > new Date(b.created) ? -1 : new Date(a.created) < new Date(b.created) ? 1 : 0
         })
     }
   }
